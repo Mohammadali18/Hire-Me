@@ -1,32 +1,34 @@
-import React, { useState } from 'react'
-import dayjs from 'dayjs'
+import React from "react";
+import { Link } from "react-router-dom";
+import dayjs from "dayjs";
 
-function JobCard(props) {
-    // const skills = ["Javascript", "React", "Nodejs"];
-    const date1 = dayjs(Date.now());
-    const diffInDays = date1.diff(props.postedOn,'day');
+export default function JobCard({ job }) {
+  const posted = dayjs().diff(dayjs(job.postedOn), "day");
+
   return (
-    <div className='mx-40 mb-4'>
-        <div className='flex justify-between items-center px-6 py-4 bg-zinc-200 rounded-md border border-black shadow-lg hover:border-blue-500 hover:translate-y-1 hover:scale-103'>
-            <div className='flex flex-col items-start gap-3'>
-                <h1 className='text-lg font-semibold'>{props.title} - {props.company}</h1>
-                <p>{props.type} &#x2022; {props.experience} &#x2022; {props.location}</p>
-                <div className='flex items-center gap-2'>
-                    {props.skills.map((skill,i) => (
-                        <p key={i} className='text-gray-500 py-1 px-2 rounded-md border border-black'>{skill}</p>
-                    ))}
-                </div>
-            </div>
-            <div className='flex items-center gap-4'>
-                <p className='text-gray-500'>Posted {diffInDays > 1? `${diffInDays} days`: `${diffInDays} day`} ago</p>
-                <a href={props.job_link} target="_blank" rel="noopener noreferrer">
-                    <button className='text-blue-500 border border-blue-500 px-10 py-2 rounded-md'>Apply</button>
-                </a>
-                
-            </div>
-        </div>
-    </div>
-  )
-}
+    <article className="bg-white rounded-2xl shadow p-5 hover:shadow-lg transition">
+      <div className="flex flex-col md:flex-row md:justify-between gap-4">
+        <div>
+          <h3 className="text-xl font-semibold">{job.title}</h3>
+          <p className="text-gray-600">{job.company} • {job.location}</p>
+          <p className="text-sm text-gray-500 mt-2">{job.type} • {job.experience}</p>
 
-export default JobCard
+          <div className="flex flex-wrap gap-2 mt-3">
+            {job.skills?.map((s, i) => (
+              <span key={i} className="text-xs px-2 py-1 rounded border text-gray-600">{s}</span>
+            ))}
+          </div>
+        </div>
+
+        <div className="flex flex-col items-start md:items-end justify-between">
+          <div className="text-sm text-gray-500">Posted {posted <= 0 ? "today" : `${posted} day${posted>1?'s':''} ago`}</div>
+
+          <div className="mt-3 flex gap-2">
+            <Link to={`/jobs/${job.id}`} className="px-3 py-2 border rounded text-sm">View</Link>
+            <a href={job.job_link} target="_blank" rel="noreferrer" className="px-3 py-2 bg-blue-600 text-white rounded text-sm">Apply</a>
+          </div>
+        </div>
+      </div>
+    </article>
+  );
+}

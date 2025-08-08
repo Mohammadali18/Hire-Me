@@ -2,9 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Global styles */
+html, body, #root {
+  height: 100%;
+}
 
-@layer base {
-  body {
-    background: linear-gradient(to right, rgb(15, 23, 42), rgb(88, 28, 135), rgb(15, 23, 42));
-  }
+body {
+  @apply bg-gray-50 text-gray-800;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
